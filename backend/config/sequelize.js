@@ -1,19 +1,23 @@
 // config/sequelize.js
 const { Sequelize } = require("sequelize");
 // Importar fichero de configuración con variables de entorno
-const config = require('./config');
+const config = require("./config");
 
-// Instanciar sequelize  para conectar a mysql
+// Instanciar sequelize para conectar a Postgres
 const sequelize = new Sequelize(
   config.db.name, // nombre bd
   config.db.user, // usuario
   config.db.password, // password
   {
-    // objeto con opciones de conexion
-    host: config.db.host, // Cambia esto por la dirección del servidor MySQL
-    port: config.db.port, // Cambia esto por el puerto del servidor MySql
-    dialect: "postgres", // Especificar el dialecto de la base de datos
-    // logging: false, // Desactiva el logging de las consultas SQL
+    host: config.db.host,
+    port: config.db.port,
+    dialect: "postgres",
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
     logging: (msg) => {
       if (msg.includes("ERROR")) {
         console.error("Error de Sequelize:", msg);
@@ -26,10 +30,10 @@ const sequelize = new Sequelize(
 (async () => {
   try {
     await sequelize.authenticate();
-    console.log("Conexión exitosa a la base de datos MySQL");
+    console.log("Conexión exitosa a la base de datos PostgreSQL");
   } catch (error) {
     console.error("Error de conexión:", error);
   }
 })();
 
-module.exports = sequelize; // Exportar la instancia de Sequelize para usarla en otros archivos
+module.exports = sequelize;
