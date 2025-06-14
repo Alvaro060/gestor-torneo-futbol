@@ -12,7 +12,7 @@ const sequelize = new Sequelize(
     // objeto con opciones de conexion
     host: config.db.host, // Cambia esto por la dirección del servidor MySQL
     port: config.db.port, // Cambia esto por el puerto del servidor MySql
-    dialect: "mysql", // Especificar el dialecto de la base de datos
+    dialect: "postgres", // Especificar el dialecto de la base de datos
     // logging: false, // Desactiva el logging de las consultas SQL
     logging: (msg) => {
       if (msg.includes("ERROR")) {
