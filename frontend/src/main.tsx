@@ -3,7 +3,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import {
-  createBrowserRouter,
+  createHashRouter,
   RouterProvider,
   Navigate,
 } from "react-router-dom";
@@ -54,13 +54,12 @@ const PerfilWrapper: React.FC = () => {
     // Borramos el token de localStorage (por si lo estuvieses usando)
     localStorage.removeItem("token");
 
-    // Forzamos recarga completa navegando a /home
-    window.location.href = "/home";
+    // Forzamos recarga completa navegando a /#/home
+    window.location.href = "/#/home";
   };
 
   return <PerfilPage onLogout={handleLogout} />;
 };
-
 
 // ---------------------------------------------------------------
 // Ruta protegida que comprueba si existe token en localStorage
@@ -70,16 +69,16 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const token = localStorage.getItem("token");
   if (!token) {
-    // Si no hay token, forzamos al usuario a /login
+    // Si no hay token, forzamos al usuario a /#/login
     return <Navigate to="/login" replace />;
   }
   return <>{children}</>;
 };
 
 // ---------------------------------------------------------------
-// Definición del router principal
+// Definición del router principal (usando HashRouter)
 // ---------------------------------------------------------------
-const router = createBrowserRouter([
+const router = createHashRouter([
   // Ahora "/" redirige por defecto a "/home"
   {
     path: "/",
