@@ -6,11 +6,11 @@ const initModels = require("../models/init-models.js").initModels;
 // Crear la instancia de sequelize con la conexión a la base de datos
 const sequelize = require("../config/sequelize.js");
 // Para comparar contraseñas cifradas
-const bcrypt = require('bcrypt'); 
+const bcrypt = require("bcrypt");
 // Librería de manejo de JWT
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 // Importar fichero de configuración con variables de entorno
-const config = require('../config/config.js');
+const config = require("../config/config.js");
 
 // Cargar las definiciones del modelo en sequelize
 const models = initModels(sequelize);
@@ -51,10 +51,11 @@ class UserController {
 
       // Configurar la cookie con el token
       res.cookie("token", token, {
-        httpOnly: true, // Evita que JavaScript acceda a la cookie
-        secure: process.env.NODE_ENV === 'production', // Solo en HTTPS en producción
-        sameSite: process.env.NODE_ENV === 'production' ? "strict" : 'Lax', // Protección CSRF // Lax en desarrollo
-        maxAge: 3600000, // 1 hora en milisegundos
+        httpOnly: true, // evita acceso desde JS
+        secure: true, // requiere HTTPS (Chrome obliga secure para SameSite=None)
+        sameSite: "none", // <- la clave para permitir la cookie en fetch/XHR cross-site
+        maxAge: 3600 * 1000, // 1 hora
+        path: "/", // opcional, pero recomendable
       });
 
       // Eliminar la contraseña del objeto de respuesta
@@ -66,7 +67,6 @@ class UserController {
         user: user,
         token: token,
       });
-
     } catch (err) {
       console.error(err);
       res.status(500).json(Respuesta.error(null, "Error interno del servidor"));
@@ -81,7 +81,7 @@ class UserController {
       if (!nombre || !email || !contrasena) {
         return res
           .status(400)
-          .json(Respuesta.error(null,"Faltan campos por informar" ));
+          .json(Respuesta.error(null, "Faltan campos por informar"));
       }
 
       // Verificar si el usuario ya existe
@@ -89,7 +89,12 @@ class UserController {
       if (existingUser) {
         return res
           .status(400)
-          .json(Respuesta.error(null,"Ya existe un usuario con ese correo electrónico." ) );
+          .json(
+            Respuesta.error(
+              null,
+              "Ya existe un usuario con ese correo electrónico."
+            )
+          );
       }
 
       // Cifrar la contraseña
@@ -108,12 +113,16 @@ class UserController {
         success: true,
         user: newUser,
       });
-
     } catch (error) {
       console.error("Error al registrar el usuario:", error);
       res
         .status(500)
-        .json(Respuesta.error(null, "Error al registrar el usuario, intenta nuevamente")); 
+        .json(
+          Respuesta.error(
+            null,
+            "Error al registrar el usuario, intenta nuevamente"
+          )
+        );
     }
   }
 
@@ -125,12 +134,17 @@ class UserController {
    * @returns {void}
    */
   async logout(req, res) {
-    res.clearCookie('token', { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-    res.status(200).json({
-      success: true,
-      message: "Cierre de sesión exitoso"
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
     });
-  };
+    return res.status(200).json({
+      success: true,
+      message: "Cierre de sesión exitoso",
+    });
+  }
 
   async getAllUsers(req, res) {
     try {
@@ -152,9 +166,13 @@ class UserController {
     try {
       // verifyToken middleware puso req.user = payload
       const userId = req.user.sub;
-      const user = await User.findByPk(userId, { attributes: { exclude: ['contrasena'] } });
+      const user = await User.findByPk(userId, {
+        attributes: { exclude: ["contrasena"] },
+      });
       if (!user) {
-        return res.status(404).json(Respuesta.error(null, "Usuario no encontrado"));
+        return res
+          .status(404)
+          .json(Respuesta.error(null, "Usuario no encontrado"));
       }
       res.status(200).json({ success: true, user });
     } catch (err) {
@@ -170,23 +188,27 @@ class UserController {
     try {
       const user = await User.findByPk(userId);
       if (!user) {
-        return res.status(404).json(Respuesta.error(null, "Usuario no encontrado"));
+        return res
+          .status(404)
+          .json(Respuesta.error(null, "Usuario no encontrado"));
       }
 
       // Actualizar campos permitidos
       await user.update(updates);
 
       // Recuperar usuario actualizado sin contraseña
-      const updatedUser = await User.findByPk(userId, { attributes: { exclude: ['contrasena'] } });
+      const updatedUser = await User.findByPk(userId, {
+        attributes: { exclude: ["contrasena"] },
+      });
 
       res.status(200).json({ success: true, user: updatedUser });
     } catch (err) {
       console.error(err);
-      res.status(500).json(Respuesta.error(null, "Error al actualizar el perfil"));
+      res
+        .status(500)
+        .json(Respuesta.error(null, "Error al actualizar el perfil"));
     }
   }
-
-  
 }
 
 module.exports = new UserController();
