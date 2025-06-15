@@ -26,7 +26,10 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use(cors({
-  origin: "http://localhost:5173", // Cambia esto si usas otro puerto en el frontend
+  origin: [
+    "http://localhost:5173", 
+    "https://gestor-torneo-futbol-frontend.onrender.com"
+  ],
   credentials: true, // Permite el envío de cookies
 }));
 
