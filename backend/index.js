@@ -1,7 +1,7 @@
 // Importar libreria para manejo de ficheros de configuración
-require('dotenv').config();
+require("dotenv").config();
 // Importar fichero de configuración con variables de entorno
-const config = require('./config/config');
+const config = require("./config/config");
 // Importar librería express --> web server
 const express = require("express");
 // Importar librería path, para manejar rutas de ficheros en el servidor
@@ -17,21 +17,18 @@ const partidoRoutes = require("./routes/partidoRoutes");
 const userRoutes = require("./routes/userRoutes");
 const noticiasRoutes = require("./routes/noticiasRoutes");
 
-
-
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Configurar middleware para analizar JSON en las solicitudes
 app.use(express.json());
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173", 
-    "https://gestor-torneo-futbol-frontend.onrender.com"
-  ],
-  credentials: true, // Permite el envío de cookies
-}));
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
+    credentials: true, // Permite el envío de cookies
+  })
+);
 
 // Habilitar el análisis de cookies
 app.use(cookieParser());
@@ -42,8 +39,6 @@ app.use("/api/jugadores", jugadorRoutes);
 app.use("/api/partidos", partidoRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/noticias", noticiasRoutes);
-
-
 
 // // Configurar el middleware para servir archivos estáticos desde el directorio 'public\old_js_vainilla'
 // app.use(express.static(path.join(__dirname, "public","old_js_vainilla")));
