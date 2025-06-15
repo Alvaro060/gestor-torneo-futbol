@@ -28,15 +28,9 @@ const Menu: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) throw new Error("No token found");
-
         const res = await fetch(`${apiUrl}/users/getUserByToken`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include", // enviar cookie JWT al backend
         });
-
         if (!res.ok) throw new Error("No autorizado");
 
         const data = await res.json();

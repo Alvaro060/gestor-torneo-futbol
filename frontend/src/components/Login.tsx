@@ -63,12 +63,12 @@ function Login() {
     if (!validate()) return;
 
     try {
-      const response = await fetch(apiUrl + "/users/login", {
+      const response = await fetch(`${apiUrl}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        credentials: "include", // Enviar y recibir cookie
         body: JSON.stringify(formData),
       });
 
@@ -82,7 +82,7 @@ function Login() {
           showConfirmButton: false,
           timer: 2000,
         });
-        localStorage.setItem("token", data.token);
+        // No guardamos token en localStorage, la cookie ya está seteada
         navigate("/home");
       } else {
         setErrors({ apiError: data.message || "Credenciales incorrectas." });
