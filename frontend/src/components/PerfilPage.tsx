@@ -82,6 +82,7 @@ const PerfilPage: React.FC<PerfilPageProps> = ({ onLogout }) => {
       timer: 1500,
     }).then(() => {
       onLogout();
+      window.location.reload();
     });
   };
 
