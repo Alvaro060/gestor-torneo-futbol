@@ -29,10 +29,9 @@ const Menu: React.FC = () => {
     const fetchUser = async () => {
       try {
         const res = await fetch(`${apiUrl}/users/getUserByToken`, {
-          credentials: "include", // enviar cookie JWT al backend
+          credentials: "include",
         });
         if (!res.ok) throw new Error("No autorizado");
-
         const data = await res.json();
         setUser(data.user);
         setIsLoggedIn(true);
@@ -50,10 +49,7 @@ const Menu: React.FC = () => {
 
   return (
     <MDBNavbar expand="lg" style={{ backgroundColor: "#e31e1e" }}>
-      <MDBContainer
-        fluid
-        className="d-flex justify-content-between align-items-center"
-      >
+      <MDBContainer fluid className="d-flex justify-content-between align-items-center">
         {/* ====================== LOGO + TÍTULO ====================== */}
         <MDBNavbarBrand className="d-flex align-items-center">
           <div
