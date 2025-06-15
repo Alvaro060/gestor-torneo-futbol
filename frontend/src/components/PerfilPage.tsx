@@ -11,6 +11,7 @@ import {
 import Swal from "sweetalert2";
 import { apiUrl } from "../config";
 import { CardMedia } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import fondo from "../assets/images/fondo_noticias.png";
 
 interface PerfilPageProps {
@@ -18,6 +19,7 @@ interface PerfilPageProps {
 }
 
 const PerfilPage: React.FC<PerfilPageProps> = ({ onLogout }) => {
+  const navigate = useNavigate();
   const [usuario, setUsuario] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -60,7 +62,6 @@ const PerfilPage: React.FC<PerfilPageProps> = ({ onLogout }) => {
       setUsuario(result.user || formData);
       setEditMode(false);
 
-      // Mostrar SweetAlert y recargar
       Swal.fire({
         title: "Perfil actualizado",
         icon: "success",
@@ -80,8 +81,9 @@ const PerfilPage: React.FC<PerfilPageProps> = ({ onLogout }) => {
       title: "¡Cierre De Sesión Exitoso!",
       showConfirmButton: false,
       timer: 1500,
-    }).then(() => {
-      onLogout();
+    }).then(async () => {
+      await onLogout();
+      navigate("/home", { replace: true });
       window.location.reload();
     });
   };
@@ -101,23 +103,22 @@ const PerfilPage: React.FC<PerfilPageProps> = ({ onLogout }) => {
 
   return (
     <Box
-    sx={{
-      minHeight: "100vh",
-      backgroundImage: `url(${fondo})`,
-      backgroundRepeat: "no-repeat",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      py: 5,
-    }}
-  >
+      sx={{
+        minHeight: "100vh",
+        backgroundImage: `url(${fondo})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        py: 5,
+      }}
+    >
       <Paper
         elevation={6}
         sx={{ p: 4, width: 360, borderRadius: 4, textAlign: "center" }}
       >
-        {/* Avatar */}
         <CardMedia
           component="img"
           height="200"
@@ -182,7 +183,6 @@ const PerfilPage: React.FC<PerfilPageProps> = ({ onLogout }) => {
           </>
         )}
 
-        {/* Aquí cambiamos onClick a handleLogoutClick */}
         <Button
           variant="outlined"
           fullWidth
