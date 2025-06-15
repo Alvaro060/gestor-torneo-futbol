@@ -161,7 +161,6 @@ const AltaJugador = () => {
         px: { xs: 2, md: 4 },
       }}
     >
-      {/* Título con estilo blanco y sombra */}
       <Typography
         variant="h4"
         align="center"
@@ -176,7 +175,6 @@ const AltaJugador = () => {
         ➕ Alta de Jugadores
       </Typography>
 
-      {/* Contenedor que centra el formulario con fondo semitransparente */}
       <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
         <Stack
           component="form"
@@ -211,7 +209,6 @@ const AltaJugador = () => {
             }
           />
 
-          {/* Select para Posición */}
           <FormControl fullWidth error={validacion.posicion}>
             <InputLabel sx={{ color: "#000" }} id="posicion-label">
               Posición

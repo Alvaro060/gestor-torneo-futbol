@@ -4,9 +4,6 @@ import { apiUrl } from "../config";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
-/**
- * Definición de los tipos de datos para el formulario
- */
 interface FormData {
   nombre: string;
   email: string;
@@ -77,7 +74,6 @@ function SignUp() {
       });
 
       if (response.ok) {
-        // Limpiar el formulario y los errores
         setFormData({
           nombre: "",
           email: "",
@@ -86,14 +82,13 @@ function SignUp() {
         });
         setErrors({});
 
-        // Mostrar el SweetAlert de éxito
         Swal.fire({
           icon: "success",
           title: "¡Registro exitoso!",
           text: "Tu cuenta ha sido creada correctamente.",
           confirmButtonText: "Iniciar sesión",
         }).then(() => {
-          navigate("/"); // Redirigir al login después de hacer clic en el botón
+          navigate("/"); 
         });
       } else {
         const data = await response.json();

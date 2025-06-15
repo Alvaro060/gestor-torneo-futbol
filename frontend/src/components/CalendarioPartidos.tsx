@@ -293,7 +293,6 @@ const CalendarioPartidos: React.FC = () => {
                 </Typography>
                 <CountdownTimer targetDate={partido.fechahora} />
 
-                {/* Equipos */}
                 <Box
                   sx={{
                     display: "flex",
@@ -305,7 +304,6 @@ const CalendarioPartidos: React.FC = () => {
                     gap: 2,
                   }}
                 >
-                  {/* Local */}
                   <Box
                     sx={{
                       flex: 1,
@@ -330,7 +328,6 @@ const CalendarioPartidos: React.FC = () => {
                     </Typography>
                   </Box>
 
-                  {/* Visitante */}
                   <Box
                     sx={{
                       flex: 1,
@@ -356,7 +353,6 @@ const CalendarioPartidos: React.FC = () => {
                   </Box>
                 </Box>
 
-                {/* Goles */}
                 <Box
                   sx={{
                     display: "flex",
@@ -381,7 +377,6 @@ const CalendarioPartidos: React.FC = () => {
                   )}
                 </Box>
 
-                {/* Estado y botones */}
                 <Box
                   sx={{
                     display: "flex",

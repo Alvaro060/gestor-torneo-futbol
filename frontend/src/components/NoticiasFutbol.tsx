@@ -1,4 +1,3 @@
-// src/components/NoticiasFutbol.tsx
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -113,7 +112,6 @@ const NoticiasFutbol: React.FC = () => {
         📰 Últimas Noticias de La Liga
       </Typography>
 
-      {/* Barra de escudos + logo "Todas" */}
       <Box
         sx={{
           display: "flex",

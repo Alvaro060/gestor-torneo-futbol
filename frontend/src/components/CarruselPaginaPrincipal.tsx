@@ -92,7 +92,6 @@ const CarruselPaginaPrincipal: React.FC = () => {
           backgroundPosition: "center",
         }}
       >
-        {/* Slider */}
         <Box
           sx={{
             position: "relative",
@@ -114,20 +113,18 @@ const CarruselPaginaPrincipal: React.FC = () => {
                 transition: "left 0.8s ease-in-out",
               }}
             >
-              {/* Aquí ponemos la etiqueta <img> en lugar de backgroundImage */}
               <Box
                 component="img"
                 src={img.url}
                 sx={{
                   width: "100%",
                   height: "100%",
-                  objectFit: "cover", // Rellenará ancho y alto, recortando si hace falta
+                  objectFit: "cover",
                 }}
               />
             </Box>
           ))}
 
-          {/* Flechas de navegación */}
           <IconButton
             onClick={handlePrev}
             sx={{
@@ -157,7 +154,6 @@ const CarruselPaginaPrincipal: React.FC = () => {
             <ChevronRight />
           </IconButton>
 
-          {/* Indicadores */}
           <Box
             sx={{
               position: "absolute",
@@ -184,7 +180,6 @@ const CarruselPaginaPrincipal: React.FC = () => {
           </Box>
         </Box>
 
-        {/* Cards */}
         <Box
           sx={{
             display: "flex",
@@ -210,7 +205,6 @@ const CarruselPaginaPrincipal: React.FC = () => {
                 color: "#fff",
               }}
             >
-              {/* Imagen */}
               {card.image && (
                 <Box
                   component="img"
@@ -225,7 +219,6 @@ const CarruselPaginaPrincipal: React.FC = () => {
                 />
               )}
 
-              {/* Contenido textual y botón */}
               <Box
                 sx={{
                   p: 2,
@@ -235,11 +228,10 @@ const CarruselPaginaPrincipal: React.FC = () => {
                   justifyContent: "space-between",
                 }}
               >
-                {/* Título y descripción */}
                 <Box
                   sx={{
                     flex: 1,
-                    minHeight: 120, // Ajusta esta altura para que todos tengan espacio igual
+                    minHeight: 120,
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
@@ -259,10 +251,9 @@ const CarruselPaginaPrincipal: React.FC = () => {
                   <Typography>{card.description}</Typography>
                 </Box>
 
-                {/* Botón centrado al fondo */}
                 <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
                   <Button
-                    component={Link} // <-- Aquí usamos React Router Link para navegación interna
+                    component={Link}
                     to={card.link}
                     size="small"
                     variant="text"
@@ -284,7 +275,6 @@ const CarruselPaginaPrincipal: React.FC = () => {
           ))}
         </Box>
 
-        {/* Footer */}
         <Box
           component="footer"
           sx={{

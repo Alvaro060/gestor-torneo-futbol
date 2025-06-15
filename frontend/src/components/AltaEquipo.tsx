@@ -46,14 +46,13 @@ function AltaEquipo() {
         if (response.ok) {
           const respuesta = await response.json();
           if (respuesta.ok) {
-            // Usar SweetAlert2 para mostrar mensaje de éxito
             Swal.fire({
               icon: "success",
               title: "¡Éxito!",
               text: "Equipo creado con éxito.",
               confirmButtonText: "Aceptar",
             }).then(() => {
-              navigate("/home"); // Volver a la página principal
+              navigate("/home");
             });
           } else {
             alert(respuesta.mensaje);
@@ -86,25 +85,21 @@ function AltaEquipo() {
       fundacion: false,
     };
 
-    // Validación para nombre
     if (datos.nombre.length < 3) {
       validacionAux.nombre = true;
       validado = false;
     }
 
-    // Validación para pais
     if (datos.pais.length < 3) {
       validacionAux.pais = true;
       validado = false;
     }
 
-    // Validación para escudo (URL)
     if (!/^https?:\/\/.*\.(jpg|jpeg|png|gif)$/i.test(datos.escudo)) {
       validacionAux.escudo = true;
       validado = false;
     }
 
-    // Validación para fundación (año)
     if (!/^\d{4}$/.test(datos.fundacion)) {
       validacionAux.fundacion = true;
       validado = false;
@@ -126,7 +121,6 @@ function AltaEquipo() {
         px: { xs: 2, md: 4 },
       }}
     >
-      {/* Título con estilo blanco y sombra */}
       <Typography
         variant="h4"
         align="center"
@@ -141,7 +135,6 @@ function AltaEquipo() {
         ➕ Alta de Equipos
       </Typography>
 
-      {/* Contenedor que centra el formulario con fondo semitransparente */}
       <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
         <Stack
           component="form"

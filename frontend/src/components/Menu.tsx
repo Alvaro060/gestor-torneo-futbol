@@ -50,7 +50,6 @@ const Menu: React.FC = () => {
   return (
     <MDBNavbar expand="lg" style={{ backgroundColor: "#e31e1e" }}>
       <MDBContainer fluid className="d-flex justify-content-between align-items-center">
-        {/* ====================== LOGO + TÍTULO ====================== */}
         <MDBNavbarBrand className="d-flex align-items-center">
           <div
             style={{
@@ -74,8 +73,6 @@ const Menu: React.FC = () => {
             Gestión De LaLiga EA Sports
           </span>
         </MDBNavbarBrand>
-
-        {/* ====================== MENÚ PRINCIPAL (SIEMPRE HORIZONTAL) ====================== */}
         <MDBNavbarNav className="d-flex align-items-center gap-4">
           {isLoggedIn ? (
             <>
@@ -198,7 +195,6 @@ const Menu: React.FC = () => {
             </>
           ) : (
             <>
-              {/* Rutas públicas cuando NO está logueado */}
               <MDBNavbarItem>
                 <MDBBtn
                   color="link"
@@ -263,7 +259,6 @@ const Menu: React.FC = () => {
           )}
         </MDBNavbarNav>
 
-        {/* ====================== AVATAR / LOGIN ====================== */}
         {isLoggedIn && user ? (
           <div
             style={{

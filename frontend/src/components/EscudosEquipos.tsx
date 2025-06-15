@@ -26,7 +26,6 @@ function EscudosEquipos() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  // 1) Comprobar si está logueado
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -42,7 +41,6 @@ function EscudosEquipos() {
     fetchUser();
   }, []);
 
-  // 2) Obtener equipos desde la API y ordenarlos alfabéticamente
   useEffect(() => {
     async function getEquipos() {
       try {
@@ -56,7 +54,6 @@ function EscudosEquipos() {
         if (!response.ok) throw new Error(`Error: ${response.status}`);
 
         const data = await response.json();
-        // Ordenar los equipos alfabéticamente por nombre
         const equiposOrdenados = data.datos.sort((a: Equipo, b: Equipo) =>
           a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" })
         );
@@ -86,13 +83,11 @@ function EscudosEquipos() {
       });
 
       if (response.ok) {
-        // Filtramos el equipo borrado
         const equiposActualizados = equipos.filter(
           (equipo) => equipo.idequipo !== idequipo
         );
         setEquipos(equiposActualizados);
 
-        // Mostrar notificación de éxito
         Swal.fire({
           title: "¡Eliminado!",
           text: "El equipo ha sido eliminado correctamente.",
@@ -114,7 +109,6 @@ function EscudosEquipos() {
         px: { xs: 2, md: 4 },
       }}
     >
-      {/* Título con estilo blanco y sombra */}
       <Typography
         variant="h4"
         align="center"
@@ -129,7 +123,6 @@ function EscudosEquipos() {
         🏆 Equipos En LaLiga
       </Typography>
 
-      {/* Contenedor semitransparente que centra el listado de equipos */}
       <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
         <Grid container spacing={4} justifyContent="center">
           {equipos.map((equipo) => (
@@ -168,7 +161,6 @@ function EscudosEquipos() {
                 <Typography variant="h6" component="div" align="center" noWrap>
                   {equipo.nombre}
                 </Typography>
-                {/* Solo mostrar botones si está logueado */}
                 {isLoggedIn && (
                   <Box
                     sx={{

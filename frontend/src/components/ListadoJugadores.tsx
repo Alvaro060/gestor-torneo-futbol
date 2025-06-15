@@ -42,13 +42,12 @@ interface Equipo {
 const ListadoJugadores = () => {
   const [jugadores, setJugadores] = useState<Jugador[]>([]);
   const [equipos, setEquipos] = useState<Equipo[]>([]);
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para el nombre de búsqueda
+  const [searchTerm, setSearchTerm] = useState("");
   const [equipoSeleccionado, setEquipoSeleccionado] = useState<number | "">("");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
-  // 1) Comprobar si está logueado
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -64,7 +63,6 @@ const ListadoJugadores = () => {
     fetchUser();
   }, []);
 
-  // Obtener jugadores desde la API
   useEffect(() => {
     async function getJugadores() {
       const response = await fetch(apiUrl + "/jugadores");
@@ -78,13 +76,11 @@ const ListadoJugadores = () => {
     getJugadores();
   }, []);
 
-  // Obtener equipos desde la API y ordenarlos alfabéticamente
   useEffect(() => {
     async function getEquipos() {
       const response = await fetch(apiUrl + "/equipos");
       if (response.ok) {
         const data = await response.json();
-        // Ordenar por nombre (alfabéticamente)
         const equiposOrdenados = data.datos.sort((a: Equipo, b: Equipo) =>
           a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" })
         );
@@ -113,13 +109,11 @@ const ListadoJugadores = () => {
       });
 
       if (response.ok) {
-        // Filtramos el jugador borrado
         const jugadoresActualizados = jugadores.filter(
           (jugador) => jugador.idjugador !== idjugador
         );
         setJugadores(jugadoresActualizados);
 
-        // Mostrar notificación de éxito
         Swal.fire({
           title: "¡Eliminado!",
           text: "El jugador ha sido eliminado correctamente.",
@@ -129,13 +123,11 @@ const ListadoJugadores = () => {
     }
   };
 
-  // Corregir el tipo de evento utilizando SelectChangeEvent
   const handleEquipoChange = (event: SelectChangeEvent<any>) => {
     const value = event.target.value;
     setEquipoSeleccionado(value);
   };
 
-  // Filtrar jugadores por nombre y equipo
   const filteredJugadores = jugadores.filter((jugador) => {
     const matchesSearchTerm = jugador.nombre
       .toLowerCase()
@@ -159,7 +151,6 @@ const ListadoJugadores = () => {
         px: { xs: 2, md: 4 },
       }}
     >
-      {/* Título con estilo blanco y sombra */}
       <Typography
         variant="h4"
         align="center"
@@ -174,7 +165,6 @@ const ListadoJugadores = () => {
         📋 Listado de Jugadores
       </Typography>
 
-      {/* Contenedor semitransparente para form controls y tabla */}
       <Box
         sx={{
           backgroundColor: "rgba(255,255,255,0.9)",
@@ -183,7 +173,6 @@ const ListadoJugadores = () => {
           mx: { xs: 0, md: 2 },
         }}
       >
-        {/* Select para seleccionar equipo */}
         <FormControl fullWidth sx={{ mt: 2 }}>
           <InputLabel>Selecciona un equipo</InputLabel>
           <Select
@@ -202,7 +191,6 @@ const ListadoJugadores = () => {
           </Select>
         </FormControl>
 
-        {/* Buscador por nombre del jugador */}
         <TextField
           label="Buscar por nombre"
           variant="outlined"
@@ -212,7 +200,6 @@ const ListadoJugadores = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        {/* Tabla de jugadores */}
         <TableContainer
           component={Paper}
           sx={{
@@ -234,7 +221,6 @@ const ListadoJugadores = () => {
                 <TableCell>Edad</TableCell>
                 <TableCell>Fin Contrato</TableCell>
                 <TableCell>Equipo</TableCell>
-                {/* Encabezados de Editar/Eliminar solo si está logueado */}
                 {isLoggedIn && <TableCell>Editar</TableCell>}
                 {isLoggedIn && <TableCell>Eliminar</TableCell>}
               </TableRow>
@@ -256,7 +242,6 @@ const ListadoJugadores = () => {
                     {equipos.find((eq) => eq.idequipo === jugador.idequipo)
                       ?.nombre || "Sin equipo"}
                   </TableCell>
-                  {/* Celdas de Editar/Eliminar solo si isLoggedIn === true */}
                   {isLoggedIn && (
                     <TableCell>
                       <Button

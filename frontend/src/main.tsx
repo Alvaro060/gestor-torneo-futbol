@@ -1,5 +1,3 @@
-// src/index.tsx
-
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import {
@@ -33,16 +31,11 @@ import Clasificacion from "./components/Clasificacion";
 import NoticiasFutbol from "./components/NoticiasFutbol";
 import CarruselPaginaPrincipal from "./components/CarruselPaginaPrincipal";
 
-import { apiUrl } from "./config"; // Asegúrate de que apiUrl apunte correctamente a tu backend
+import { apiUrl } from "./config";
 
-// ---------------------------------------------------------------
-// Componente wrapper para la página de perfil, con logout completo
-// ---------------------------------------------------------------
 const PerfilWrapper: React.FC = () => {
   const handleLogout = async () => {
     try {
-      // Llamamos primero al endpoint /users/logout para que el servidor
-      // elimine la cookie "token".
       await fetch(`${apiUrl}/users/logout`, {
         method: "POST",
         credentials: "include",
@@ -51,53 +44,42 @@ const PerfilWrapper: React.FC = () => {
       console.warn("Error al llamar a /users/logout:", err);
     }
 
-    // Borramos el token de localStorage (por si lo estuvieses usando)
     localStorage.removeItem("token");
 
-    // Forzamos recarga completa navegando a /#/home
     window.location.href = "/#/home";
   };
 
   return <PerfilPage onLogout={handleLogout} />;
 };
 
-// ---------------------------------------------------------------
-// Ruta protegida que comprueba si existe token en localStorage
-// ---------------------------------------------------------------
+
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const token = localStorage.getItem("token");
   if (!token) {
-    // Si no hay token, forzamos al usuario a /#/login
     return <Navigate to="/login" replace />;
   }
   return <>{children}</>;
 };
 
-// ---------------------------------------------------------------
-// Definición del router principal (usando HashRouter)
-// ---------------------------------------------------------------
+
 const router = createHashRouter([
-  // Ahora "/" redirige por defecto a "/home"
   {
     path: "/",
     element: <Navigate to="/home" replace />,
   },
 
-  // Mantenemos el componente Login en "/login"
   {
     path: "/login",
     element: <Login />,
   },
 
-  // Rutas dentro de /home (Home funciona como un layout)
   {
     path: "/home",
     element: <Home />,
     errorElement: <PaginaError />,
     children: [
-      // —— Rutas públicas (visibles aunque no haya token) ——
       { index: true, element: <CarruselPaginaPrincipal /> },
       { path: "noticias", element: <NoticiasFutbol /> },
       { path: "escudosequipos", element: <EscudosEquipos /> },
@@ -105,7 +87,6 @@ const router = createHashRouter([
       { path: "calendariopartidos", element: <CalendarioPartidos /> },
       { path: "clasificacion", element: <Clasificacion /> },
 
-      // —— Rutas protegidas (solo si hay token) ——
       {
         path: "perfil",
         element: (
@@ -163,27 +144,20 @@ const router = createHashRouter([
         ),
       },
 
-      // Si intentan acceder a cualquier otro subpath de /home,
-      // los redirigimos a "/home/perfil"
       { path: "*", element: <Navigate to="/home/perfil" replace /> },
     ],
   },
 
-  // Página de error genérica
   {
     path: "/pagina-error",
     element: <PaginaError />,
   },
-  // Cualquier otra ruta no definida redirige a "/home"
   {
     path: "*",
     element: <Navigate to="/home" replace />,
   },
 ]);
 
-// ---------------------------------------------------------------
-// Renderizado de la app
-// ---------------------------------------------------------------
 const rootElement = document.getElementById("root");
 if (rootElement) {
   createRoot(rootElement).render(

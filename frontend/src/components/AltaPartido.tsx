@@ -50,7 +50,6 @@ const AltaPartido = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Cargar equipos
     fetch(`${apiUrl}/equipos`)
       .then((res) => res.json())
       .then((data) => {
@@ -63,7 +62,6 @@ const AltaPartido = () => {
       })
       .catch((err) => console.error("Error al obtener equipos:", err));
 
-    // Cargar partidos
     fetch(`${apiUrl}/partidos`)
       .then((res) => res.json())
       .then((data) => {
@@ -81,11 +79,9 @@ const AltaPartido = () => {
   ) => {
     const { name, value } = e.target;
     setDatos((prev) => {
-      // Si se cambia el equipo local, limpiamos el equipo visitante si es el mismo
       if (name === "idequipolocal" && value === datos.idequipovisitante) {
         return { ...prev, [name]: value, idequipovisitante: "" };
       }
-      // Si se cambia el equipo visitante, limpiamos el equipo local si es el mismo
       if (name === "idequipovisitante" && value === datos.idequipolocal) {
         return { ...prev, [name]: value, idequipolocal: "" };
       }
@@ -160,9 +156,8 @@ const AltaPartido = () => {
   };
 
   const equiposDisponibles = (jornada: string) => {
-    if (!jornada) return equipos; // Si no hay jornada, no filtrar nada
+    if (!jornada) return equipos;
 
-    // Filtramos los equipos que ya están asignados a la jornada seleccionada
     const equiposOcupados = partidos
       .filter((p) => p.jornada === parseInt(jornada))
       .map((p) => p.idequipolocal)
@@ -187,7 +182,6 @@ const AltaPartido = () => {
       px: { xs: 2, md: 4 },
     }}
   >
-    {/* Título con estilo blanco y sombra */}
     <Typography
       variant="h4"
       align="center"
@@ -202,7 +196,6 @@ const AltaPartido = () => {
       ➕ Alta de Partidos
     </Typography>
 
-    {/* Contenedor que centra el formulario */}
     <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
       <Stack
         component="form"
@@ -211,7 +204,6 @@ const AltaPartido = () => {
         sx={{
           width: { xs: "100%", sm: "60%", md: "40%" },
           mx: 2,
-          // Fondo semitransparente para mejorar legibilidad sobre el fondo
           backgroundColor: "rgba(255,255,255,0.9)",
           borderRadius: 2,
           p: 3,

@@ -107,7 +107,6 @@ function Login() {
         p: 2,
       }}
     >
-      {/* Logo */}
       <Box sx={{ textAlign: "center", mb: 2 }}>
         <img
           src={logo}
@@ -116,7 +115,6 @@ function Login() {
         />
       </Box>
 
-      {/* Caja de formulario */}
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -130,7 +128,6 @@ function Login() {
           position: "relative",
         }}
       >
-        {/* Botón volver arriba a la izquierda */}
         <Button
           variant="text"
           size="large"

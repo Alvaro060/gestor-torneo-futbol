@@ -4,11 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import { apiUrl } from "../config";
 import Swal from "sweetalert2";
 import fondo from "../assets/images/fondo_noticias.png";
-/**
- * Componente para modificar un equipo existente.
- * @component
- * @returns {JSX.Element} JSX element del componente ModificarEquipo.
- */
+
 function ModificarEquipo() {
   const params = useParams();
   const [datos, setDatos] = useState({
@@ -37,17 +33,13 @@ function ModificarEquipo() {
       } else if (response.status === 404) {
         let data = await response.json();
         alert(data.mensaje);
-        navigate("/"); // Volver a la página principal por ruta erronea
+        navigate("/");
       }
     }
 
     getEquipoById();
-  }, [datos.idequipo, navigate]); // Dependencia de datos.idequipo
+  }, [datos.idequipo, navigate]);
 
-  /**
-   * Maneja el envío del formulario.
-   * @param {React.FormEvent<HTMLFormElement>} e - Evento de envío.
-   */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -63,7 +55,6 @@ function ModificarEquipo() {
         });
 
         if (response.ok) {
-          // Usar SweetAlert2 para mostrar mensaje de éxito
           Swal.fire({
             icon: 'success',
             title: '¡Éxito!',
@@ -71,7 +62,7 @@ function ModificarEquipo() {
             confirmButtonText: 'Aceptar',
           });
 
-          navigate(-1); // Volver a la ruta anterior
+          navigate(-1);
         } else {
           const data = await response.json();
           alert(data.mensaje);
@@ -83,10 +74,6 @@ function ModificarEquipo() {
     }
   };
 
-  /**
-   * Valida los datos del formulario.
-   * @returns {boolean} True si los datos son válidos, false en caso contrario.
-   */
   function validarDatos() {
     let validado = true;
     let validacionAux = {
@@ -120,10 +107,6 @@ function ModificarEquipo() {
     return validado;
   }
 
-  /**
-   * Maneja el cambio en los campos del formulario.
-   * @param {React.ChangeEvent<HTMLInputElement>} e - Evento de cambio.
-   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDatos({
       ...datos,
@@ -143,7 +126,6 @@ function ModificarEquipo() {
       px: { xs: 2, md: 4 },
     }}
   >
-    {/* Título con estilo blanco y sombra */}
     <Typography
       variant="h4"
       align="center"
@@ -158,7 +140,6 @@ function ModificarEquipo() {
       🛡️ Modificar equipo
     </Typography>
 
-    {/* Contenedor que centra el formulario con fondo semitransparente */}
     <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
       <Stack
         component="form"

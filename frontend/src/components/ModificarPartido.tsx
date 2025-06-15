@@ -77,7 +77,6 @@ function ModificarPartido() {
     obtenerEquipos();
   }, [params.idpartido, navigate]);
 
-  // Sólo se modifica validarDatos para permitir 0 ó más
   const validarDatos = () => {
     let validado = true;
     const v = {
@@ -101,7 +100,6 @@ function ModificarPartido() {
       v.fechahora = true;
       validado = false;
     }
-    // Aquí permitimos 0 como válido
     const gl = Number(partido.goleslocal);
     if (
       partido.goleslocal === "" ||
@@ -194,7 +192,6 @@ function ModificarPartido() {
       px: { xs: 2, md: 4 },
     }}
   >
-    {/* Título con estilo blanco y sombra */}
     <Typography
       variant="h4"
       align="center"
@@ -209,7 +206,6 @@ function ModificarPartido() {
       📅 Modificar Partido
     </Typography>
 
-    {/* Contenedor que centra el formulario con fondo semitransparente */}
     <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
       <Stack
         component="form"

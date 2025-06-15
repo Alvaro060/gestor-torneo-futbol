@@ -19,7 +19,6 @@ import { styled } from "@mui/material/styles";
 import { apiUrl } from "../config";
 import fondo from "../assets/images/fondo_noticias.png";
 
-// Interfaces
 export interface Partido {
   idpartido: number;
   fechahora: string;
@@ -54,7 +53,6 @@ interface Stats {
   points: number;
 }
 
-// Styled components
 const StyledPaper = styled(Paper)(({ theme }) => ({
   maxWidth: 900,
   margin: "0 auto",
@@ -63,17 +61,16 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   overflow: "hidden",
 }));
 
-// Dynamic border colors by position
 const StyledTableRow = styled(TableRow)<{ rank: number; total: number }>(
   ({ theme, rank, total }) => {
     let borderColor = theme.palette.divider;
     if (rank >= 1 && rank <= 4)
-      borderColor = theme.palette.primary.main; // azul para 1-4
+      borderColor = theme.palette.primary.main; 
     else if (rank >= 5 && rank <= 6)
-      borderColor = theme.palette.warning.main; // naranja para 5-6
+      borderColor = theme.palette.warning.main; 
     else if (rank === 7)
-      borderColor = theme.palette.success.main; // verde para 7
-    else if (rank > total - 3) borderColor = theme.palette.error.main; // rojo para últimas 3
+      borderColor = theme.palette.success.main; 
+    else if (rank > total - 3) borderColor = theme.palette.error.main;
     return {
       "& td:first-of-type": {
         borderLeft: `4px solid ${borderColor}`,
@@ -116,7 +113,6 @@ const Clasificacion: React.FC = () => {
   const [stats, setStats] = useState<Record<number, Stats>>({});
   const [searchJornada, setSearchJornada] = useState<number | "">("");
 
-  // Fetch data
   useEffect(() => {
     (async () => {
       try {
@@ -144,7 +140,6 @@ const Clasificacion: React.FC = () => {
     })();
   }, []);
 
-  // Compute stats
   useEffect(() => {
     const filtered = partidos.filter(
       (p) =>
@@ -205,17 +200,13 @@ const Clasificacion: React.FC = () => {
     (a, b) => a - b
   );
 
-  // Sort: 1) puntos totales, 2) enfrentamiento directo (puntos),
-  //        3) diferencia de goles en enfrentamiento directo,
-  //        4) diferencia de goles general, 5) (último recurso) GF total.
+  
   const orden = Object.keys(stats)
     .map(Number)
     .sort((a, b) => {
-      // 1) Comparar puntos totales
       const diffPts = stats[b].points - stats[a].points;
       if (diffPts !== 0) return diffPts;
 
-      // 2) Filtrar los partidos directos entre a y b
       const direct = partidos.filter(
         (p) =>
           p.estado === "Finalizado" &&
@@ -248,21 +239,17 @@ const Clasificacion: React.FC = () => {
         } else hB += 3;
       });
 
-      // 2) a) Puntos en enfrentamiento directo
       const diffHeadPts = hB - hA;
       if (diffHeadPts !== 0) return diffHeadPts;
 
-      // 2) b) Si empate en puntos directo, diferencia de goles en ese enfrentamiento
       const diffHeadGD = gfB - gcB - (gfA - gcA);
       if (diffHeadGD !== 0) return diffHeadGD;
 
-      // 3) Si aún empate, comparar diferencia de goles general (GF – GC)
       const totalGD_A = stats[a].gf - stats[a].gc;
       const totalGD_B = stats[b].gf - stats[b].gc;
       const diffTotalGD = totalGD_B - totalGD_A;
       if (diffTotalGD !== 0) return diffTotalGD;
 
-      // 4) Último recurso: comparar goles a favor total (para desempatar empates absolutos)
       return stats[b].gf - stats[a].gf;
     });
 

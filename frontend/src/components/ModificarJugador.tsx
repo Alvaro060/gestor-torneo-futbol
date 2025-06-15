@@ -173,7 +173,6 @@ function ModificarJugador() {
       px: { xs: 2, md: 4 },
     }}
   >
-    {/* Título con estilo blanco y sombra */}
     <Typography
       variant="h4"
       align="center"
@@ -188,7 +187,6 @@ function ModificarJugador() {
       👤 Modificar Jugador
     </Typography>
 
-    {/* Contenedor que centra el formulario con fondo semitransparente */}
     <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
       <Stack
         component="form"
@@ -219,7 +217,6 @@ function ModificarJugador() {
           helperText={validacion.apellido && "Mínimo 2 caracteres"}
         />
 
-        {/* Select para Posición */}
         <FormControl fullWidth error={validacion.posicion}>
           <InputLabel id="posicion-label">Posición</InputLabel>
           <Select
